@@ -19,7 +19,8 @@ New Architecture only. Expo SDK 57 and 58. Needs a development build (not Expo G
 From GitHub (no npm release yet):
 
 ```sh
-npm install github:24samj/react-native-glaze
+npm install --allow-git=all github:24samj/react-native-glaze   # npm 12 blocks git deps without the flag
+# or: bun add github:24samj/react-native-glaze
 npx expo install expo-glass-effect expo-blur
 npx expo prebuild --clean
 npx expo run:android   # and/or: npx expo run:ios
