@@ -1,0 +1,13 @@
+node_modules/
+*.tgz
+.DS_Store
+.env
+.env*
+android/build/
+android/.gradle/
+android/local.properties
+example/node_modules/
+example/android/
+example/ios/
+example/.expo/
+*.log

@@ -1,0 +1,64 @@
+{
+  "name": "react-native-glaze",
+  "version": "0.1.0",
+  "description": "One liquid glass API for React Native: Apple's native glass on iOS, a GPU refraction lens on Android, with all motion owned natively.",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "src",
+    "android/build.gradle",
+    "android/src",
+    "expo-module.config.json",
+    "THIRD_PARTY_NOTICES.md",
+    "!**/__tests__",
+    "!**/__mocks__"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "jest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "liquid-glass",
+    "glass",
+    "blur",
+    "android",
+    "ios"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/24samj/react-native-glaze.git"
+  },
+  "bugs": {
+    "url": "https://github.com/24samj/react-native-glaze/issues"
+  },
+  "author": "Sam",
+  "license": "MIT",
+  "homepage": "https://github.com/24samj/react-native-glaze#readme",
+  "devDependencies": {
+    "@testing-library/react-native": "^14.1.0",
+    "@types/jest": "^30.0.0",
+    "@types/react": "~19.2.2",
+    "expo": "~57.0.31",
+    "expo-blur": "~57.0.3",
+    "expo-glass-effect": "~57.0.4",
+    "expo-module-scripts": "^56.0.3",
+    "jest-expo": "~57.0.6",
+    "react": "19.2.3",
+    "react-native": "0.86.3",
+    "test-renderer": "^1.3.1",
+    "typescript": "~6.0.3"
+  },
+  "peerDependencies": {
+    "expo": ">=57.0.0 <59.0.0",
+    "expo-blur": ">=57.0.0 <59.0.0",
+    "expo-glass-effect": ">=57.0.0 <59.0.0",
+    "react": "*",
+    "react-native": "*"
+  }
+}

@@ -1,0 +1,24 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'dev.glaze'
+version = '0.1.0'
+
+android {
+  namespace "dev.glaze"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+  }
+  lint {
+    abortOnError true
+    warningsAsErrors false
+  }
+}
+
+dependencies {
+  implementation 'com.facebook.react:react-android'
+  implementation 'androidx.dynamicanimation:dynamicanimation:1.1.0'
+}
