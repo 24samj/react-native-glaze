@@ -185,12 +185,17 @@ class GlazeView(context: Context, appContext: AppContext) : ExpoView(context, ap
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         GlazeRegistry.add(this)
-        reduceTransparency = GlassAccessibility.prefersReducedTransparency(context)
-        reduceMotion = GlassAccessibility.prefersReducedMotion(context) || GlassAccessibility.isPowerSaveMode(context)
-        painter.tier = GlazeTiers.current(context, reduceTransparency)
+        refreshEnvironment()
         source = resolveSource()
         applyMaterial(false)
         updateListening()
+    }
+
+    /** Accessibility settings and battery saver can change while the app is in the background. */
+    private fun refreshEnvironment() {
+        reduceTransparency = GlassAccessibility.prefersReducedTransparency(context)
+        reduceMotion = GlassAccessibility.prefersReducedMotion(context) || GlassAccessibility.isPowerSaveMode(context)
+        painter.tier = GlazeTiers.current(context, reduceTransparency)
     }
 
     override fun onDetachedFromWindow() {
@@ -212,8 +217,15 @@ class GlazeView(context: Context, appContext: AppContext) : ExpoView(context, ap
 
     override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
         super.onWindowFocusChanged(hasWindowFocus)
-        // A dialog over the screen may have moved us to another branch; re-check the source
-        if (hasWindowFocus) source = resolveSource()
+        if (!hasWindowFocus) return
+        // Returning from Settings or a dialog: settings may have changed, and the source may have moved
+        val tier = painter.tier
+        refreshEnvironment()
+        source = resolveSource()
+        if (tier != painter.tier) {
+            updateListening()
+            invalidate()
+        }
     }
 
     private fun shouldListen(): Boolean =

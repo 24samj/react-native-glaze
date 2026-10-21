@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  js:
+    name: Typecheck, lint, test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test -- --ci
+      - name: build/ is up to date
+        run: |
+          npm run build
+          git diff --exit-code -- build || (echo "Run 'npm run build' and commit build/" && exit 1)
+
+  android:
+    name: Android compile and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            example/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+      - run: npm ci
+        working-directory: example
+      - run: npx expo prebuild --platform android --no-install
+        working-directory: example
+      # Only this module's tasks: third-party libraries' lint is not ours to fix
+      - run: >
+          ./gradlew --console=plain
+          :react-native-glaze:compileDebugKotlin
+          :react-native-glaze:lintDebug
+          -x :react-native-worklets:lintAnalyzeDebug
+          -x :react-native-reanimated:lintAnalyzeDebug
+          -x :expo-modules-core:lintAnalyzeDebug
+          -PreactNativeArchitectures=x86_64
+        working-directory: example/android
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-lint
+          path: android/build/reports/lint-results-debug.*

@@ -13,8 +13,10 @@ internal object GlazeTiers {
 
     private const val TAG = "Glaze"
 
+    // Read from the JS thread (isLiquidGlassAvailable) as well as the UI thread
     @Volatile
     private var lensBroken = false
+    @Volatile
     private var base: GlazeTier? = null
 
     /** Chosen once per process from the OS version and device class, never by users. */

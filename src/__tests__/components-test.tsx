@@ -10,7 +10,9 @@ jest.mock('expo', () => {
   const RN = jest.requireActual<typeof import('react-native')>('react-native');
   return {
     requireNativeView: (_module: string, view: string) =>
-      forwardRef<View, ViewProps>((props, ref) => createElement(RN.View, { ...props, ref, testID: props.testID ?? view })),
+      forwardRef<View, ViewProps>((props, ref) =>
+        createElement(RN.View, { ...props, ref, testID: props.testID ?? view })
+      ),
     requireNativeModule: () => ({ isLiquidGlassAvailable: () => true }),
   };
 });
@@ -20,7 +22,9 @@ jest.mock('expo-glass-effect', () => {
   const { forwardRef, createElement } = jest.requireActual<typeof import('react')>('react');
   const RN = jest.requireActual<typeof import('react-native')>('react-native');
   const make = (name: string) =>
-    forwardRef<View, ViewProps>((props, ref) => createElement(RN.View, { ...props, ref, testID: props.testID ?? name }));
+    forwardRef<View, ViewProps>((props, ref) =>
+      createElement(RN.View, { ...props, ref, testID: props.testID ?? name })
+    );
   return {
     GlassView: make('ExpoGlassView'),
     GlassContainer: make('ExpoGlassContainer'),
@@ -32,7 +36,9 @@ jest.mock('expo-glass-effect', () => {
 jest.mock('expo-blur', () => {
   const { createElement } = jest.requireActual<typeof import('react')>('react');
   const RN = jest.requireActual<typeof import('react-native')>('react-native');
-  return { BlurView: (props: ViewProps) => createElement(RN.View, { ...props, testID: 'BlurView' }) };
+  return {
+    BlurView: (props: ViewProps) => createElement(RN.View, { ...props, testID: 'BlurView' }),
+  };
 });
 
 const native = Platform.OS === 'ios' || Platform.OS === 'android';
@@ -184,7 +190,10 @@ describe('GlassButton', () => {
       const style = Object.assign({}, ...([glass.props.style].flat(3).filter(Boolean) as object[]));
       expect(style.borderRadius).toBe(8);
       expect(style.margin).toBeUndefined();
-      const outer = Object.assign({}, ...([screen.getByRole('button').props.style].flat(3).filter(Boolean) as object[]));
+      const outer = Object.assign(
+        {},
+        ...([screen.getByRole('button').props.style].flat(3).filter(Boolean) as object[])
+      );
       expect(outer.margin).toBe(10);
       expect(outer.minHeight).toBe(44);
     });

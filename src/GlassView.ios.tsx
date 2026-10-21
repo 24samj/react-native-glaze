@@ -17,8 +17,17 @@ export default function GlassView(props: GlassViewProps) {
     return <NativeGlassView {...props} />;
   }
 
-  const { glassEffectStyle, tintColor, isInteractive: _isInteractive, colorScheme, style, children, ...rest } = props;
-  const styleName = typeof glassEffectStyle === 'object' ? glassEffectStyle.style : (glassEffectStyle ?? 'regular');
+  const {
+    glassEffectStyle,
+    tintColor,
+    isInteractive: _isInteractive,
+    colorScheme,
+    style,
+    children,
+    ...rest
+  } = props;
+  const styleName =
+    typeof glassEffectStyle === 'object' ? glassEffectStyle.style : (glassEffectStyle ?? 'regular');
   if (styleName === 'none') {
     return (
       <View style={style} {...rest}>
@@ -42,7 +51,10 @@ export default function GlassView(props: GlassViewProps) {
     <View style={[styles.clip, style]} {...rest}>
       <BlurView tint={tint} intensity={100} style={StyleSheet.absoluteFill} pointerEvents="none" />
       {tintColor != null ? (
-        <View style={[StyleSheet.absoluteFill, { backgroundColor: tintColor, opacity: 0.6 }]} pointerEvents="none" />
+        <View
+          style={[StyleSheet.absoluteFill, { backgroundColor: tintColor, opacity: 0.6 }]}
+          pointerEvents="none"
+        />
       ) : null}
       {children}
     </View>

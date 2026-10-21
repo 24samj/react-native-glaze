@@ -26,7 +26,8 @@ export default function GlassView({
   style,
   ...rest
 }: GlassViewProps) {
-  const config = typeof glassEffectStyle === 'object' ? glassEffectStyle : { style: glassEffectStyle };
+  const config =
+    typeof glassEffectStyle === 'object' ? glassEffectStyle : { style: glassEffectStyle };
   const tint = tintColor != null ? processColor(tintColor) : null;
   return (
     <NativeGlazeView

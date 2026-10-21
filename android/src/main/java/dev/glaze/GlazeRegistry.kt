@@ -133,7 +133,7 @@ internal object GlazeRegistry {
             host.canScrollVertically(1) || host.canScrollVertically(-1) ||
             host.canScrollHorizontally(1) || host.canScrollHorizontally(-1)
         for (child in hidden) {
-            if (isGlass(child)) continue
+            if (isGlass(child) || child.alpha <= 0f) continue
             child.getLocationOnScreen(childLocation)
             val s = canvas.save()
             if (clip) canvas.clipRect(0f, 0f, host.width.toFloat(), host.height.toFloat())

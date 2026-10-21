@@ -13,8 +13,14 @@ export function cornerRadiiFrom(style) {
     return [
         num(s.borderTopLeftRadius) ?? num(s.borderTopStartRadius) ?? num(s.borderStartStartRadius) ?? r,
         num(s.borderTopRightRadius) ?? num(s.borderTopEndRadius) ?? num(s.borderStartEndRadius) ?? r,
-        num(s.borderBottomRightRadius) ?? num(s.borderBottomEndRadius) ?? num(s.borderEndEndRadius) ?? r,
-        num(s.borderBottomLeftRadius) ?? num(s.borderBottomStartRadius) ?? num(s.borderEndStartRadius) ?? r,
+        num(s.borderBottomRightRadius) ??
+            num(s.borderBottomEndRadius) ??
+            num(s.borderEndEndRadius) ??
+            r,
+        num(s.borderBottomLeftRadius) ??
+            num(s.borderBottomStartRadius) ??
+            num(s.borderEndStartRadius) ??
+            r,
     ];
 }
 //# sourceMappingURL=cornerRadii.js.map

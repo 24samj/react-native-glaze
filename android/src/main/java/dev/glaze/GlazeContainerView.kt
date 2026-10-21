@@ -47,6 +47,7 @@ class GlazeContainerView(context: Context, appContext: AppContext) : ExpoView(co
 
     fun setSpacing(dp: Double?) {
         spacingPx = ((dp ?: 0.0).toFloat() * density).coerceAtLeast(0f)
+        updateListening()
         invalidate()
     }
 
@@ -54,6 +55,18 @@ class GlazeContainerView(context: Context, appContext: AppContext) : ExpoView(co
         super.onAttachedToWindow()
         painter.tier = GlazeTiers.current(context, GlassAccessibility.prefersReducedTransparency(context))
         updateListening()
+    }
+
+    override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
+        super.onWindowFocusChanged(hasWindowFocus)
+        if (!hasWindowFocus) return
+        // Returning from Settings: reduce transparency may have changed
+        val tier = GlazeTiers.current(context, GlassAccessibility.prefersReducedTransparency(context))
+        if (tier != painter.tier) {
+            painter.tier = tier
+            invalidate()
+        }
+        source = null
     }
 
     override fun onDetachedFromWindow() {
@@ -71,12 +84,14 @@ class GlazeContainerView(context: Context, appContext: AppContext) : ExpoView(co
     }
 
     private fun updateListening() {
-        if (isAttachedToWindow && visibleAggregated) {
+        // Without spacing nothing can merge, so there is nothing to do per frame
+        if (isAttachedToWindow && visibleAggregated && spacingPx > 0f) {
             if (observer == null) {
                 observer = viewTreeObserver.also { it.addOnPreDrawListener(preDraw) }
             }
         } else {
             stopListening()
+            unmerge()
         }
     }
 
@@ -111,7 +126,7 @@ class GlazeContainerView(context: Context, appContext: AppContext) : ExpoView(co
     /** Pre-draw: decide whether the pair merges, then re-record the merged lens. */
     private fun onFrame() {
         found.clear()
-        if (spacingPx > 0f) collectGlass(this)
+        collectGlass(this)
         val a = found.getOrNull(0)
         val b = found.getOrNull(1)
         var merge = found.size == 2 && a != null && b != null &&
@@ -139,8 +154,7 @@ class GlazeContainerView(context: Context, appContext: AppContext) : ExpoView(co
 
         a.updateShape()
         b.updateShape()
-        val oldRect = RectF(shape.rect)
-        val oldRect2 = RectF(shape.rect2)
+        val moved = shape.rect != rectA || shape.rect2 != rectB
         shape.rect.set(rectA)
         System.arraycopy(a.shape.radii, 0, shape.radii, 0, 4)
         shape.rect2.set(rectB)
@@ -159,7 +173,7 @@ class GlazeContainerView(context: Context, appContext: AppContext) : ExpoView(co
         if (painter.samplesBackdrop) {
             val src = source?.takeIf { it.isAttachedToWindow } ?: resolveSource().also { source = it } ?: return
             painter.record(src, shape, a.material, a.glassTint, touch)
-        } else if (oldRect != shape.rect || oldRect2 != shape.rect2) {
+        } else if (moved) {
             // Flat tiers draw straight into our display list, so geometry changes need a redraw
             invalidate()
         }

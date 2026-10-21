@@ -1,5 +1,12 @@
 import type { ReactNode, Ref } from 'react';
-import type { ColorValue, PressableProps, StyleProp, View, ViewProps, ViewStyle } from 'react-native';
+import type {
+  ColorValue,
+  PressableProps,
+  StyleProp,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 
 export type GlassStyle = 'regular' | 'clear' | 'none';
 

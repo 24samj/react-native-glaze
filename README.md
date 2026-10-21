@@ -1,5 +1,7 @@
 # react-native-glaze
 
+[![CI](https://github.com/24samj/react-native-glaze/actions/workflows/ci.yml/badge.svg)](https://github.com/24samj/react-native-glaze/actions/workflows/ci.yml)
+
 One liquid glass API for React Native on iOS and Android.
 
 - **iOS 26+**: Apple's native Liquid Glass via [`expo-glass-effect`](https://docs.expo.dev/versions/latest/sdk/glass-effect/).
@@ -132,8 +134,11 @@ npx expo run:android   # or run:ios
 npm install
 npm test          # Jest, iOS + Android projects
 npm run typecheck
-npm run build     # emits build/ (committed so GitHub installs work)
+npm run lint
+npm run build     # emits build/ (committed so GitHub installs work; CI checks it's current)
 ```
+
+Device testing checklist: [`docs/TESTING.md`](docs/TESTING.md).
 
 ## License
 

@@ -1,25 +1,70 @@
 import { jsx as _jsx } from "react/jsx-runtime";
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Animated, Platform, Pressable, StyleSheet, } from 'react-native';
-import { isLiquidGlassAvailable } from './availability';
 import GlassView from './GlassView';
+import { isGlassEffectAPIAvailable, isLiquidGlassAvailable } from './availability';
 const MIN_TOUCH = 44;
 // Style keys that place the button among its siblings; they go on the outer Pressable.
 // Everything else (padding, alignment, radius, border) styles the glass itself.
 const OUTER_KEYS = new Set([
-    'margin', 'marginTop', 'marginBottom', 'marginLeft', 'marginRight', 'marginStart', 'marginEnd',
-    'marginHorizontal', 'marginVertical', 'marginBlock', 'marginBlockStart', 'marginBlockEnd',
-    'marginInline', 'marginInlineStart', 'marginInlineEnd',
-    'position', 'top', 'bottom', 'left', 'right', 'start', 'end', 'inset', 'insetBlock',
-    'insetBlockStart', 'insetBlockEnd', 'insetInline', 'insetInlineStart', 'insetInlineEnd',
-    'flex', 'flexGrow', 'flexShrink', 'flexBasis', 'alignSelf', 'zIndex',
-    'width', 'height', 'minWidth', 'minHeight', 'maxWidth', 'maxHeight', 'aspectRatio',
-    'transform', 'opacity',
+    'margin',
+    'marginTop',
+    'marginBottom',
+    'marginLeft',
+    'marginRight',
+    'marginStart',
+    'marginEnd',
+    'marginHorizontal',
+    'marginVertical',
+    'marginBlock',
+    'marginBlockStart',
+    'marginBlockEnd',
+    'marginInline',
+    'marginInlineStart',
+    'marginInlineEnd',
+    'position',
+    'top',
+    'bottom',
+    'left',
+    'right',
+    'start',
+    'end',
+    'inset',
+    'insetBlock',
+    'insetBlockStart',
+    'insetBlockEnd',
+    'insetInline',
+    'insetInlineStart',
+    'insetInlineEnd',
+    'flex',
+    'flexGrow',
+    'flexShrink',
+    'flexBasis',
+    'alignSelf',
+    'zIndex',
+    'width',
+    'height',
+    'minWidth',
+    'minHeight',
+    'maxWidth',
+    'maxHeight',
+    'aspectRatio',
+    'transform',
+    'opacity',
 ]);
 const RADIUS_KEYS = [
-    'borderRadius', 'borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomLeftRadius',
-    'borderBottomRightRadius', 'borderTopStartRadius', 'borderTopEndRadius', 'borderBottomStartRadius',
-    'borderBottomEndRadius', 'borderStartStartRadius', 'borderStartEndRadius', 'borderEndStartRadius',
+    'borderRadius',
+    'borderTopLeftRadius',
+    'borderTopRightRadius',
+    'borderBottomLeftRadius',
+    'borderBottomRightRadius',
+    'borderTopStartRadius',
+    'borderTopEndRadius',
+    'borderBottomStartRadius',
+    'borderBottomEndRadius',
+    'borderStartStartRadius',
+    'borderStartEndRadius',
+    'borderEndStartRadius',
     'borderEndEndRadius',
 ];
 // iOS without Liquid Glass gets a small scale on press in place of the system response
@@ -31,8 +76,9 @@ const FALLBACK_PRESS_SCALE = 1.04;
  */
 export default function GlassButton({ glassEffectStyle, tintColor, colorScheme, style, children, disabled, accessibilityRole = 'button', accessibilityState, onLayout, onPressIn, onPressOut, ref, ...pressableProps }) {
     const [measuredHeight, setMeasuredHeight] = useState(undefined);
-    const scale = useRef(new Animated.Value(1)).current;
-    const fallbackPress = Platform.OS === 'ios' && !isLiquidGlassAvailable();
+    const [scale] = useState(() => new Animated.Value(1));
+    // Same condition as GlassView's iOS fallback: no system press response there
+    const fallbackPress = Platform.OS === 'ios' && !(isLiquidGlassAvailable() && isGlassEffectAPIAvailable());
     const flat = StyleSheet.flatten(style) ?? {};
     const outer = {};
     const inner = {};

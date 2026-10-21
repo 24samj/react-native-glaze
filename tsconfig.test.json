@@ -1,0 +1,6 @@
+// Type-checks the tests too (Jest only transpiles them)
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noEmit": true },
+  "exclude": []
+}
