@@ -138,7 +138,8 @@ npm run lint
 npm run build     # emits build/ (committed so GitHub installs work; CI checks it's current)
 ```
 
-Device testing checklist: [`docs/TESTING.md`](docs/TESTING.md).
+Device testing checklist: [`docs/TESTING.md`](docs/TESTING.md). See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
+repo layout, the rules that keep Android cheap, and how releases work.
 
 ## License
 

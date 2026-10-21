@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ['*']
+
+  # Dev tooling only. Expo, React and React Native move together per Expo SDK, so those are
+  # bumped by hand with `npx expo install --fix` when a new SDK is supported.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      dev-tooling:
+        patterns: ['*']
+    ignore:
+      - dependency-name: 'expo'
+      - dependency-name: 'expo-*'
+      - dependency-name: 'jest-expo'
+      - dependency-name: 'react'
+      - dependency-name: 'react-native'
+      - dependency-name: '@types/react'
+      - dependency-name: 'typescript'

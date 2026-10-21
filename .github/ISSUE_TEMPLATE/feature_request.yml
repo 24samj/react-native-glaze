@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest an API or behaviour
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The API mirrors `expo-glass-effect`, and motion is fixed by the library (as on iOS), so requests for
+        motion or tuning props are out of scope. Requests that bring the Android look or feel closer to iOS
+        are very welcome.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What you're trying to build and what's missing.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: How it could work, and how iOS / expo-glass-effect handles it if it does.

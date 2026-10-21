@@ -1,0 +1,52 @@
+name: Bug report
+description: Something renders wrong, crashes, janks, or a press doesn't fire
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw and what you expected. Screenshots or a screen recording help a lot for visual bugs.
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: The smallest JSX that shows it, or a link to a repo.
+      render: tsx
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options: [iOS, Android]
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device / simulator and OS version
+      placeholder: Pixel 7, Android 15 / iPhone 16 simulator, iOS 26.1
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      placeholder: react-native-glaze 0.1.0, Expo SDK 57, react-native 0.86
+    validations:
+      required: true
+  - type: input
+    id: available
+    attributes:
+      label: isLiquidGlassAvailable() result
+      description: On Android this tells us which quality tier is active.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Native logs if relevant (`adb logcat | grep -i glaze`, Xcode console).
+      render: shell
