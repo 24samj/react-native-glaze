@@ -125,6 +125,15 @@ npm install
 npx expo run:android   # or run:ios
 ```
 
+## Development
+
+```sh
+npm install
+npm test          # Jest, iOS + Android projects
+npm run typecheck
+npm run build     # emits build/ (committed so GitHub installs work)
+```
+
 ## License
 
 MIT. Includes code adapted from QWEA0/Liquid-Glass-Android (MIT); see `THIRD_PARTY_NOTICES.md`.
